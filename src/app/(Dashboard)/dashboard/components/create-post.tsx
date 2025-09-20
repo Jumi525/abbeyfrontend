@@ -82,7 +82,7 @@ export function CreatePostModal({ isOpen, onClose }: CreatePostModalProps) {
                 size="sm"
                 className="flex items-center space-x-2 border border-blue-200 rounded-full text-gray-600 hover:text-blue-600"
               >
-                <Image className="w-4 h-4" />
+                <div className="w-4 h-4" />
                 <span>Photo</span>
               </Button>
               <Button

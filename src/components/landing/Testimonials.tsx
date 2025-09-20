@@ -28,7 +28,7 @@ const Testimonials = ({ testimonials }: TestimonialProps) => {
               className="bg-white p-6 rounded-lg shadow-sm border border-gray-200"
             >
               <p className="text-gray-600/80 mb-6 italic">
-                "{testimonial.quote}"
+                {testimonial.quote}
               </p>
               <div className="flex items-center">
                 <img

@@ -8,7 +8,8 @@ import {
 } from "@tanstack/react-query";
 import { ReactNode, useState } from "react";
 
-export default function queryClientProvider({
+// The function name has been corrected to start with an uppercase letter.
+export default function QueryClientProviderWrapper({
   children,
   dehydratedState,
 }: {

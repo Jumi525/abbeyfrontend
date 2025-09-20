@@ -13,10 +13,17 @@ interface UseInfiniteResourceOpts {
   params?: Record<string, string | number | boolean | null | undefined>;
 }
 
+interface PaginatedData<T> {
+  data: T[];
+  skip: number;
+  take: number;
+  hasMore: boolean;
+}
+
 const BASE_API_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://api.your-domain.com";
 
-export function useInfiniteResource<T = any>({
+export function useInfiniteResource<T>({
   queryKey,
   endpoint,
   pageSize = 20,
@@ -24,7 +31,7 @@ export function useInfiniteResource<T = any>({
   params = {},
 }: UseInfiniteResourceOpts) {
   const { data: session } = useSession();
-  return useInfiniteQuery({
+  return useInfiniteQuery<PaginatedData<T>>({
     queryKey: [...queryKey, params],
     queryFn: async ({ pageParam = 0 }) => {
       const token = session?.accessToken;
@@ -48,30 +55,30 @@ export function useInfiniteResource<T = any>({
       });
 
       if (!res.ok) throw new Error("Failed to fetch");
-      return res.json() as Promise<T>;
+      return res.json();
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage: any) =>
+    getNextPageParam: (lastPage) =>
       lastPage?.hasMore ? lastPage.skip + lastPage.take : undefined,
     enabled,
   });
 }
 
-type UseResourceQueryOpts<T = any> = {
+type UseResourceQueryOpts<T> = {
   queryKey: readonly unknown[];
   endpoint: string;
   enabled?: boolean;
   params?: Record<string, string | number | boolean | null | undefined>;
 };
 
-export function useResourceQuery<T = any>({
+export function useResourceQuery<T>({
   queryKey,
   endpoint,
   enabled = true,
   params = {},
 }: UseResourceQueryOpts<T>): UseQueryResult<T> {
   const { data: session } = useSession();
-  return useQuery({
+  return useQuery<T>({
     queryKey: [...queryKey, params],
     queryFn: async () => {
       const token = session?.accessToken;
@@ -96,7 +103,7 @@ export function useResourceQuery<T = any>({
       });
 
       if (!res.ok) throw new Error(`Failed to fetch: ${url}`);
-      return res.json() as Promise<T>;
+      return res.json();
     },
     enabled,
   });

@@ -8,7 +8,6 @@ import Link from "next/link";
 import { cn, formatNumber } from "../utils";
 import { Session } from "next-auth";
 import { UserProfile } from "../types";
-import Image from "next/image";
 import { useResourceQuery } from "../hooks/useQueryFn";
 import Avatar from "@/components/ui/avatar";
 

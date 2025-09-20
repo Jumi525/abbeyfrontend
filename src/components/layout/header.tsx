@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Search, Bell, LogOut, Menu, X, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import { Session } from "next-auth";
 import { logoutAction } from "@/app/action/signout";
 import { ProfileEditModal } from "../ui/profile-edit-modal";

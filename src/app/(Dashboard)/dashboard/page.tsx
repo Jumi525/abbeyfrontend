@@ -27,7 +27,7 @@ export default function DashboardPage() {
               name={session.data?.user.name || "s"}
               className="shrink-0"
             />
-            <span className="text-gray-500">What's on your mind?</span>
+            <span className="text-gray-500">What&apos;s on your mind?</span>
           </div>
           <Button
             onClick={() => setIsModalOpen(true)}
