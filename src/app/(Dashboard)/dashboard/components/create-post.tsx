@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Image, Video, Calendar, Smile } from "lucide-react";
+import { Video, Calendar, Smile } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Modal } from "@/components/ui/modal";

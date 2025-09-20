@@ -1,9 +1,6 @@
-import {
-  useInfiniteQuery,
-  useQuery,
-  UseQueryResult,
-} from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 interface UseInfiniteResourceOpts {
   queryKey: (string | unknown)[];
@@ -13,17 +10,10 @@ interface UseInfiniteResourceOpts {
   params?: Record<string, string | number | boolean | null | undefined>;
 }
 
-interface PaginatedData<T> {
-  data: T[];
-  skip: number;
-  take: number;
-  hasMore: boolean;
-}
-
 const BASE_API_URL =
   process.env.NEXT_PUBLIC_API_URL || "https://api.your-domain.com";
 
-export function useInfiniteResource<T>({
+export function useInfiniteResource<T = any>({
   queryKey,
   endpoint,
   pageSize = 20,
@@ -31,7 +21,7 @@ export function useInfiniteResource<T>({
   params = {},
 }: UseInfiniteResourceOpts) {
   const { data: session } = useSession();
-  return useInfiniteQuery<PaginatedData<T>>({
+  return useInfiniteQuery({
     queryKey: [...queryKey, params],
     queryFn: async ({ pageParam = 0 }) => {
       const token = session?.accessToken;
@@ -55,30 +45,30 @@ export function useInfiniteResource<T>({
       });
 
       if (!res.ok) throw new Error("Failed to fetch");
-      return res.json();
+      return res.json() as Promise<T>;
     },
     initialPageParam: 0,
-    getNextPageParam: (lastPage) =>
+    getNextPageParam: (lastPage: any) =>
       lastPage?.hasMore ? lastPage.skip + lastPage.take : undefined,
     enabled,
   });
 }
 
-type UseResourceQueryOpts<T> = {
+type UseResourceQueryOpts<T = any> = {
   queryKey: readonly unknown[];
   endpoint: string;
   enabled?: boolean;
   params?: Record<string, string | number | boolean | null | undefined>;
 };
 
-export function useResourceQuery<T>({
+export function useResourceQuery<T = any>({
   queryKey,
   endpoint,
   enabled = true,
   params = {},
 }: UseResourceQueryOpts<T>): UseQueryResult<T> {
   const { data: session } = useSession();
-  return useQuery<T>({
+  return useQuery({
     queryKey: [...queryKey, params],
     queryFn: async () => {
       const token = session?.accessToken;
@@ -103,7 +93,7 @@ export function useResourceQuery<T>({
       });
 
       if (!res.ok) throw new Error(`Failed to fetch: ${url}`);
-      return res.json();
+      return res.json() as Promise<T>;
     },
     enabled,
   });
